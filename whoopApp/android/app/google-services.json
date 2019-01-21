@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "345619959993",
+    "firebase_url": "https://whoopapp-25a92.firebaseio.com",
+    "project_id": "whoopapp-25a92",
+    "storage_bucket": "whoopapp-25a92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345619959993:android:17c9f5a83560931b",
+        "android_client_info": {
+          "package_name": "com.whoopapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345619959993-5mvbcpjtd4ukj9kg3ot0nhtdfltdavt0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.whoopapp",
+            "certificate_hash": "44392b2fda6942f4926ad873dce18e080ecc5adc"
+          }
+        },
+        {
+          "client_id": "345619959993-4v47vmm4kqc55qefl75o5gipipn74mfm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZRD6OrpBl8oRHFi8wLhaxReMoEki-Urw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345619959993-4v47vmm4kqc55qefl75o5gipipn74mfm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
