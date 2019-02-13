@@ -14,6 +14,7 @@ class RecvMessageObject extends MessageObject {
     this.title = title;
     this.timestamp = timestamp;
     this.sender_id = sender_id
+    this.sent = false;
     this.bColor = '#fff'
     this.tColor = '#500000'
     this.date = this.processTimestamp(timestamp);
@@ -26,7 +27,7 @@ class RecvMessageObject extends MessageObject {
     var timeDiff = now - timestamp * 1000;
     if(timeDiff > 60*60*24*1000){
       console.log('return month and date')
-      return date.getMonth()+1 + '/' + date.getDate()
+      return date.getMonth()+1 + '/' + date.getDate() + '/' + date.getFullYear();
       //return date.toISOString()
     }
     console.log('return time')
@@ -41,6 +42,7 @@ class SentMessageObject extends MessageObject {
     this.text = text;
     this.title = title;
     this.timestamp = timestamp;
+    this.sent = true;
     this.date = this.processTimestamp(timestamp);
     this.bColor = '#000000';
     this.tColor = '#fff';
@@ -53,7 +55,7 @@ class SentMessageObject extends MessageObject {
     var timeDiff = now - timestamp * 1000;
     if(timeDiff > 60*60*24*1000){
       console.log('return month and date')
-      return date.getMonth()+1 + '/' + date.getDate()
+      return date.getMonth()+1 + '/' + date.getDate() + '/' + date.getFullYear();
       //return date.toISOString()
     }
     console.log('return time')
@@ -315,10 +317,22 @@ class localStorageHandler{
   }
   makeMessageObject(msg_data){
     if(msg_data.sent){
-      return new SentMessageObject(msg_data.id, msg_data.text, msg_data.title, msg_data.timestamp);
+      return new SentMessageObject(msg_data.msg_id, msg_data.text, msg_data.title, msg_data.timestamp);
     } else {
-      return new RecvMessageObject(msg_data.id, msg_data.text, msg_data.title, msg_data.timestamp, msg_data.sender_id);
+      return new RecvMessageObject(msg_data.msg_id, msg_data.text, msg_data.title, msg_data.timestamp, msg_data.sender_id);
     }
+  }
+  removeMessage(msg_data){
+    var msg_id = msg_data.id;
+    var tmp = 0;
+    for(msg in this.messages){
+      if(msg.id = msg_id){
+        this.messages.splice(tmp, 1);
+        break;
+      }
+      tmp++;
+    }
+    this.replaceMessagesCallback(this.getMessages())
   }
   insertMessage(msg_data){
     console.log('in the insert message function');

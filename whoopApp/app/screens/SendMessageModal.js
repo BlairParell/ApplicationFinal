@@ -104,6 +104,9 @@ export default class SendMessageModal extends React.Component {
         selectedContacts: params.selectedContacts,
         selectedString: params.selectedString
       })
+
+
+
     }
     this.props.navigation.setParams({ _dropdownOptionsParams: this. _dropdownOptions });
   }
@@ -111,7 +114,7 @@ export default class SendMessageModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: '',
+      message: this.props.navigation.getParam('selectedMsg',''), // Sets the value of the message to the text of previous string if it's for forwarded msg else make it null
       selectedContacts: [],
       selectedGroups: [],
       selectedString: 'Empty',
@@ -197,6 +200,9 @@ export default class SendMessageModal extends React.Component {
       console.log('response: ' + JSON.stringify(responseData))
       this.insertNewMessage(new_message_id, msg_txt, user_ids, timestamp)
       this.props.navigation.navigate('Feed');
+    }).catch((error) => {
+      alert("Network issue occurred... Please try again.")
+      console.error(error)
     })
   }
 
@@ -246,6 +252,7 @@ export default class SendMessageModal extends React.Component {
   }
 
   render() {
+
     return (
       <View>
         <View style={styles.container}>
@@ -269,7 +276,10 @@ export default class SendMessageModal extends React.Component {
             maxLength={200}
             multiline={true}
             numberOfLines={4}
-            onChangeText={(text) => this.setState({message:text})} />
+            defaultValue={this.state.message}
+            onChangeText={(text) => this.setState({message: text})}
+            value={this.state.message} // Updates the value, if it's for forwarded msgs and no text is changed then it will send the text that came from the previous text msg
+            />
         </View>
         <View>
         {this.state.loading &&
