@@ -7,7 +7,7 @@ class MessageObject {
 }
 
 class RecvMessageObject extends MessageObject {
-  constructor(id, text, title, timestamp, sender_id){
+  constructor(id, text, title, timestamp, sender_id, unknown){
     super();
     this.id = id;
     this.text = text;
@@ -15,8 +15,9 @@ class RecvMessageObject extends MessageObject {
     this.timestamp = timestamp;
     this.sender_id = sender_id
     this.sent = false;
-    this.bColor = '#fff'
-    this.tColor = '#500000'
+    this.unknown = unknown;
+    this.bColor = '#500000'
+    this.tColor = '#fff'
     this.date = this.processTimestamp(timestamp);
   }
   processTimestamp(timestamp){
@@ -44,8 +45,9 @@ class SentMessageObject extends MessageObject {
     this.timestamp = timestamp;
     this.sent = true;
     this.date = this.processTimestamp(timestamp);
-    this.bColor = '#000000';
+    this.bColor = '#282828';
     this.tColor = '#fff';
+    this.unknown = false;
   }
   processTimestamp(timestamp){
     this.timestamp = timestamp
@@ -315,11 +317,20 @@ class localStorageHandler{
   addReplaceMessagesCallback(callback){
     this.replaceMessagesCallback = callback
   }
+  isUnknown(contact_id){
+    for(cnt in this.contacts){
+      if(this.contacts[cnt].id == contact_id){
+        return false;
+      }
+    }
+    return true;
+  }
   makeMessageObject(msg_data){
     if(msg_data.sent){
       return new SentMessageObject(msg_data.msg_id, msg_data.text, msg_data.title, msg_data.timestamp);
     } else {
-      return new RecvMessageObject(msg_data.msg_id, msg_data.text, msg_data.title, msg_data.timestamp, msg_data.sender_id);
+      var unknown = this.isUnknown(msg_data.sender_id);
+      return new RecvMessageObject(msg_data.msg_id, msg_data.text, msg_data.title, msg_data.timestamp, msg_data.sender_id, unknown);
     }
   }
   removeMessage(msg_data){

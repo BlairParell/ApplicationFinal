@@ -10,7 +10,8 @@ import {
   ListView,
   AsyncStorage,
   KeyboardAvoidingView,
-  NativeModules
+  NativeModules,
+  Image
 } from 'react-native';
 import Dimensions from 'Dimensions';
 import { StackNavigator } from 'react-navigation';
@@ -18,6 +19,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 export default class LogIn extends React.Component {
   static navigationOptions = {
+    header:null,
     title: 'WHOOP!!! APP',
     headerStyle: {
       backgroundColor: '#530100'
@@ -244,51 +246,65 @@ export default class LogIn extends React.Component {
   render() {
 
     return (
-      <View style={{flex:1}}>
+      <View style={{flex:1, backgroundColor:'#fff'}}>
       <KeyboardAwareScrollView
         resetScrollToCoord={{ x:0, y:0 }}
         contentContainerStyle={styles.container}
         scrollEnabled={true}>
+        
+       {/* <View stlye={{flex: 2}}>
+       <Image source={require('../images/chatIcon.png')} style={{width: 90, height: 80, resizeMode:'contain', alignSelf:'flex-end', marginTop: 15}} />
+       </View> */}
         <Text style={styles.title}>
-          WHOOP!!!
+          Whoop!!!
         </Text>
-        <Text style={styles.description}>
-          Please Sign In
-        </Text>
+
+
+        <View style={styles.inputSection}>
+         <Image source={require('../images/emailIcon3.png')} style={styles.inputIcon} />
         <TextInput placeholder='Username/Email'
           returnKeyType={'next'}
           returnKeyLabel={'next'}
           selectionColor={'black'}
-          style={styles.input}
-          underlineColorAndroid='black'
+          style={styles.inputEmail2}
+          underlineColorAndroid='transparent'
           onChangeText={(text) => this.setState({email_address:text.toLowerCase().replace(' ', '')})} />
+        </View>
+
+
+
+         <View style={styles.inputSection}>
+         <Image source={require('../images/passwordIcon2.png')} style={styles.inputIcon} />
         <TextInput placeholder='Password'
           returnKeyType={'done'}
           returnKeyLabel={'done'}
           selectionColor={'black'}
-          style={styles.input}
-          underlineColorAndroid='black'
+          style={styles.inputEmail2}
+          underlineColorAndroid='transparent'
           secureTextEntry={true}
           onChangeText={(text) => this.setState({password:text})} />
+           </View>
         <TouchableHighlight
           style={styles.button1}
           onPress={this._onLOGINPressed}
           underlayColor='#565656' >
-          <Text style={{fontWeight:'bold',color:'#000'}}> LOGIN </Text>
+          <Text style={{fontWeight:'bold',color:'#fff'}}> LOGIN </Text>
         </TouchableHighlight>
         <TouchableHighlight
-          style={styles.button}
+          style={styles.forgotPass}
           onPress={() => this.props.navigation.navigate('ForgotPassword')}
           underlayColor='#565656' >
-          <Text style={{fontWeight:'bold',color:'#000'}}> FORGOT PASSWORD </Text>
+          <Text style={{fontWeight:'bold',color:'gray'}}> Forgot Password? </Text>
         </TouchableHighlight>
+        <View style={{flexDirection:'row'}}>
+        <Text style={styles.signUp}> Not Yet Registered? </Text>
         <TouchableHighlight
-          style={styles.button}
+          style={styles.signUp}
           onPress={() => this.props.navigation.navigate('SignUp')}
           underlayColor='#565656' >
-          <Text style={{fontWeight:'bold',color:'#000'}}> SIGN UP </Text>
+          <Text style={{fontWeight:'bold',color:'blue'}}> SIGN UP! </Text>
         </TouchableHighlight>
-
+        </View>
       </KeyboardAwareScrollView>
       {this.state.isLoading &&
         <View style={styles.isLoading}>
@@ -308,6 +324,10 @@ export default class LogIn extends React.Component {
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
 const styles = StyleSheet.create({
+  mainContainer:{
+    backgroundColor:'#ffffff',
+    height: Dimensions.get('window').height
+  },
   container: {
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -315,17 +335,46 @@ const styles = StyleSheet.create({
   button1: {
     padding: 10,
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
+    justifyContent: 'center',
+    backgroundColor: '#500000',
+    marginHorizontal: 100,
+    borderRadius: 25,
+    marginBottom: 10, 
+    height: 50,
+    width: DEVICE_WIDTH - 150,
+    marginTop: 20,
+  },
+  forgotPass:{
+    padding: 10,
+    alignItems: 'center',
+    backgroundColor: '#fff',
     width: DEVICE_WIDTH - 100,
     marginBottom: 10,
-    marginTop: 20
   },
+  signUp:{
+    //padding: 10,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+   // width: DEVICE_WIDTH - 100,
+    marginBottom: 10,
+    marginTop: 80
+  },
+  inputIcon: {
+   padding: 10,
+    width: 25,
+    height: 25,
+    marginRight: 2,
+    marginLeft: 20,
+    resizeMode: 'contain',
+    
+},
   button: {
     padding: 10,
     alignItems: 'center',
     backgroundColor: '#DDDDDD',
     width: DEVICE_WIDTH - 100,
     marginBottom: 10,
+    
   },
   description: {
     fontSize: 20,
@@ -353,10 +402,90 @@ const styles = StyleSheet.create({
     paddingLeft: 10
   },
   title: {
-    marginVertical: 20,
-    fontSize: 40,
-    textAlign: 'center',
+    alignItems: 'center',
+    fontSize: 60,
+    marginTop:70,
     color: '#500000',
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  //  marginTop: 70,
+    marginBottom: 20
+  },
+  inputEmail: {
+    //flex:1,
+    marginTop: 20,
+    marginBottom: 20,
+    fontSize: 18,
+    textAlign: 'left',
+    color: '#000',
+    width: DEVICE_WIDTH - 100,
+    height: 50,
+    marginHorizontal: 20,
+    paddingLeft: 10,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 20,
+    elevation: 5,
+    borderColor: '#fff',
+    textAlign:'center',
+    
+  },
+  inputPassword: {
+    marginTop: 15,
+    marginBottom: 20,
+    fontSize: 18,
+    textAlign: 'left',
+    color: '#000',
+    width: DEVICE_WIDTH - 100,
+    height: 50,
+    marginHorizontal: 20,
+    paddingLeft: 10,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 20,
+    elevation: 5,
+    borderColor: '#fff',
+    textAlign:'center'
+
+
+  },
+  inputSection: {
+    height: 50,
+    width: '70%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderColor: '#fff',
+   // borderWidth: 2,
+    borderRadius: 25,
+    marginTop: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 20,
+    elevation: 5,
+    borderColor: '#fff',
+    marginBottom: 15
+},
+inputEmail2: {
+  flex: 1,
+  paddingTop: 10,
+  paddingRight: 10,
+  paddingBottom: 10,
+  paddingLeft: 0,
+  backgroundColor: 'transparent',
+  color: 'black',
+  marginLeft: 5,
+  fontSize: 18,
+  textAlign:'center',
+  
+},
 });

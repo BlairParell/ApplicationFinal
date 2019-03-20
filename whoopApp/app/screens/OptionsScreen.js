@@ -11,7 +11,7 @@ import Dimensions from 'Dimensions';
 
 export default class Options extends React.Component {
   static navigationOptions = {
-    title: 'WHOOP!!! APP',
+    title: 'WHOOP!!!',
     headerStyle: {
       backgroundColor: '#500000'
     },
@@ -43,12 +43,12 @@ onPress = () => {
             value={this.state.sounds}
             onValueChange={sounds => this.setState({sounds})} />
         </View>
-        <View style={styles.container1}>
+        {/* <View style={styles.container1}>
           <Text style={styles.description}>Hide Messages</Text>
           <Switch
             value={this.state.messages}
             onValueChange={messages => this.setState({messages})} />
-        </View>
+        </View> */}
         <View style={styles.container2}>
           <TouchableHighlight
             style={styles.button}

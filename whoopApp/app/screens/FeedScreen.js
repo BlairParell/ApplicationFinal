@@ -31,7 +31,7 @@ const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 
 function MiniOfflineSign() {
-  
+
   // Alert.alert(
   //   'Warning',
   //   'Internet Not Working!',
@@ -61,8 +61,10 @@ class Message extends React.Component{
   constructor(props){
     super(props);
     this.hideMessageCallback = this.props.hideCallback;
+    this.addContactCallback = this.props.addCallback;
     this.item = this.props.item; // message object
     this.navigation = this.props.navigation;
+    this.unknownContact = this.props.unknown;
     this.state = {
       isModalVisible: false,
       isConnected: true
@@ -84,7 +86,7 @@ class Message extends React.Component{
   onReplyPress = () => { // Logic for replying to msgs
     this.setState({ isModalVisible: !this.state.isModalVisible }); // For showing the menu
     //const { params } = this.props.item;
-    this.navigation.navigate('SendMessageModal', {selectedString: this.props.item.title.slice(6,this.props.item.title.length), selectedContacts: [{'id':this.props.item.sender_id}]}); // For Replying to msg
+    this.navigation.navigate('SendMessageModal', {selectedString: this.props.item.title.slice(4,this.props.item.title.length), selectedContacts: [{'id':this.props.item.sender_id}]}); // For Replying to msg
   }
   onForwardPress = () => { // Logic for forwarding the msg
     this.setState({ isModalVisible: !this.state.isModalVisible }); // For showing the menu
@@ -94,16 +96,21 @@ class Message extends React.Component{
     this.hideMessageCallback(this.props.item);
     this._toggleModal();
   }
+  onAddContactPress = () => { // Logic for add contact
+    this.addContactCallback(this.item.id);
+    this._toggleModal();
+  }
 
   render = () => {
     console.log("ALI : "+ this.props.item)
     // if (!this.state.isConnected) {
     //   return ( <MiniOfflineSign /> );
-    // } 
+    // }
     return(
-      
+
       <TouchableHighlight onPress={this.onPress} onLongPress={this._toggleModal}>
-        <View style={{flexDirection:'row',flexWrap:'wrap',backgroundColor:this.item.bColor}}
+        <View style={{flexDirection:'row',flexWrap:'wrap',backgroundColor:this.item.bColor,borderRadius:10}}
+          
           marginBottom={2}
           paddingHorizontal={0}
           paddingVertical={8}
@@ -114,23 +121,31 @@ class Message extends React.Component{
           onBackdropPress={() => this.setState({ isModalVisible: false })}
 
           >
-           <View style={{ width:'80%', height:'50%', backgroundColor:'white', justifyContent:'center', alignSelf:'center' }}>
+           <View style={{ width:'80%', height:'60%', backgroundColor:'transparent', justifyContent:'center', alignSelf:'center' }}>
             <View style={{flexDirection:'column', justifyContent:'space-between'}}>
             <TouchableOpacity onPress={this.onReplyPress}>
-              <Text style={{color:'black', textAlign:'center', fontSize:30, marginTop:5}}>Reply</Text>
-              <View style={{backgroundColor:'black', width:'70%', height:2, alignSelf:'center' }}>
+            <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20, marginTop: 20 }}>
+              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Reply</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.onForwardPress}>
-              <Text style={{color:'black', textAlign:'center', fontSize:30, marginTop:10}}>Forward</Text>
-              <View style={{backgroundColor:'black', width:'70%', height:2, alignSelf:'center' }}>
+              
+              <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20 }}>
+              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Forward</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.onHidePress}>
-              <Text style={{color:'black', textAlign:'center', fontSize:30, marginTop:10}}>Delete</Text>
-              <View style={{backgroundColor:'black', width:'70%', height:2, alignSelf:'center' }}>
+            <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:"#fff", marginBottom: 20 }}>
+              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Delete</Text>
               </View>
             </TouchableOpacity>
+            <View style={this.unknownContact ? null : {display:"none"}}>
+            <TouchableOpacity onPress={this.onAddContactPress}>
+            <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20 }}>
+              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Add Contact</Text>
+              </View>
+            </TouchableOpacity>
+            </View>
             {/* <View style={{ width:'80%', height:'50%', backgroundColor:'#500000', justifyContent:'center', alignSelf:'center' }}>
             <View style={{flexDirection:'column', justifyContent:'space-between'}}>
             <TouchableOpacity onPress={this.onReplyPress}>
@@ -159,19 +174,41 @@ class Message extends React.Component{
               </View>
             </TouchableOpacity> */}
             <TouchableOpacity onPress={this._toggleModal}>
-              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Close</Text>
-
+            <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 10 }}>
+              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Close</Text>
+              </View>
 
             </TouchableOpacity>
             </View>
           </View>
           </Modal>
-          
+
           {/* <MiniOfflineSign /> */}
-          <Text style={{paddingLeft:5,textAlign:'left', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}>{this.props.item.title}</Text>
-          <Text style={{paddingRight:5,textAlign:'right', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}>{this.props.item.date}</Text>
-          <Text style={{paddingHorizontal:5,textAlign:'left', color:this.props.item.tColor}}>{this.props.item.text}</Text>
+          <View style={{flexDirection:'column', flex:1}}>
+          <View style={{flex:1, flexDirection:'row'}}>
+          <View style={{justifyContent:'flex-start'}}>
+          <Text style={{paddingLeft:15,textAlign:'left', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}>{this.props.item.title}</Text>
+          </View>
+          <View style={{justifyContent:'flex-end'}}>
+          <Text style={{paddingRight:10,textAlign:'right', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}>{this.props.item.date}</Text>
+          </View>
+          </View>
+          <View style={{flex:1, flexDirection:'row'}}>
+          <View style={{flex :1,justifyContent:'flex-start'}}>
+          <Text style={{paddingHorizontal:15,textAlign:'left', color:this.props.item.tColor}}>{this.props.item.text}</Text>
+          </View>
+          <View style={this.item.bColor==='#282828' ? null : {display:"none"} }>
+          <View style={{flex: 0.4,justifyContent:'flex-end', paddingRight: 15}}>
+          <View style={{justifyContent:'flex-end',width:0,height:0,backgroundColor:'transparent',borderStyle:'solid',borderLeftWidth:10,borderRightWidth:10,borderBottomWidth:15,borderLeftColor:'transparent',borderRightColor:'transparent',borderBottomColor:'white'}}>
+          </View>
+          </View>
+          </View>
+          </View>
+          {/* <View style={{paddingRight:10,alignItems:'right', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}> */}
+          </View>
+          {/* </View> */}
         </View>
+        {/* </View> */}
       </TouchableHighlight>
     );
   }
@@ -185,7 +222,7 @@ export default class Feed extends React.Component {
       profile={false}
     />//
   });
-  
+
 
   constructor(props) {
     super(props);
@@ -245,7 +282,7 @@ export default class Feed extends React.Component {
       alert("Network issue occurred... Please try again.")
       console.error(error)
     })
-  
+
   }
 
   loadAllMessages(callback){
@@ -422,6 +459,30 @@ export default class Feed extends React.Component {
     }
   }
 
+  addContactCallback(contact_id){
+    var user_id = this.handler.getUserId();
+    var session_token = this.handler.getSessionToken();
+    fetch('https://n4dwn5g227.execute-api.us-east-2.amazonaws.com/testing/contact/unknown', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: user_id,
+        session_token: session_token,
+        contactee_user_id: contact_id
+      })
+    }).then((response) => response.json())
+    .then((responseData) => {
+      console.log(JSON.stringify(responseData))
+    }).catch((error) => {
+      alert("Network issue occurred... Please try again.")
+      console.error(error)
+    })
+  }
+
   //when the user is looking for new messages
   _onRefresh(){
     /*
@@ -517,7 +578,7 @@ export default class Feed extends React.Component {
           data={this.state.messages}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) =>(
-            <Message navigation={this.props.navigation} item={item} title={item.title} date={item.date} text={item.text}  tColor={item.tColor} msg_id={item.id} hideCallback={this.hideMessageCallback.bind(this)}/>
+            <Message navigation={this.props.navigation} item={item} hideCallback={this.hideMessageCallback.bind(this)} addCallback={this.addContactCallback.bind(this)} unknown={item.unknown}/>
           )}
           ListFooterComponent={this.renderFooter}
           onEndReachedThreshold={0.5}
@@ -536,8 +597,8 @@ export default class Feed extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
-    marginTop: 10,
+    padding: 12,
+    marginTop: 3,
     flex: 1
   },
   isLoading: {
@@ -600,7 +661,7 @@ const styles = StyleSheet.create({
   flex:1
   //top: 30
 },
-offlineText: { 
+offlineText: {
   color: '#fff'
 },
 });

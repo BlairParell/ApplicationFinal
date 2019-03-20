@@ -12,7 +12,7 @@ import {
 import { StackNavigator } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-export default class ForgotPassword extends React.Component {
+export default class ForgotPasswordConfirm extends React.Component {
   static navigationOptions = {
     title: 'Forgot Password',
     headerStyle: {
@@ -51,7 +51,7 @@ export default class ForgotPassword extends React.Component {
       .then((responseData) => {
         console.log("responseData = ", responseData)
         if(responseData.Failed){
-          alert('sending email failed') 
+          alert('sending email failed')
         }
       })
       .catch((error) => {
@@ -59,10 +59,9 @@ export default class ForgotPassword extends React.Component {
       })
     } catch (error) {
       console.log("error:", error);
-     // alert("Error sending request.");
+      alert("Error sending request.");
     }
-    this.props.navigation.navigate('ForgotPasswordConfirm');
-   // alert("Please wait until you receive an email with further instructions to reset your password.")
+    alert("Please wait until you receive an email with further instructions to reset your password.")
   };
 
   async _authenticate(email) {
@@ -70,8 +69,8 @@ export default class ForgotPassword extends React.Component {
   }
 
   _changePassword = () => {
-    var email = this.state.email_address;
-    this._authenticate(email);
+    
+    this.props.navigation.navigate('LogIn')
   };
 
    _changeText(text) {
@@ -87,28 +86,14 @@ export default class ForgotPassword extends React.Component {
       <View style={styles.mainContainer}>
         <View style={styles.container}>
         <Text style={styles.title}>
-          Forgot your password?
+          Your Request has been changed!
         </Text>
-        <Text style={styles.description}>
-          Enter your email address and we{`'`}ll send you a link to automatically sign in. Once signed in, you{`'`}ll be prompted to change your password if you wish.
-        </Text>
-        </View>
-        <View style={{marginHorizontal:14}}>
-        <Text style={styles.text}>Email Address</Text>
-        </View>
-        <View style={styles.container2}>
-        <TextInput
-          returnKeyType={'done'}
-          style={styles.input}
-          placeholder='test@hotmail.com'
-          returnKeyLabel={'done'}
-          underlineColorAndroid='#fff'
-          onChangeText={(text) => this.setState({email_address:text.toLowerCase().replace(' ', '')})} />
+        
         <TouchableHighlight
           style={styles.button}
           underlayColor='#565656'
           onPress={this._changePassword} >
-          <Text style={{color:'white',fontWeight:'bold',fontSize:16}}> Send </Text>
+          <Text style={{color:'white',fontWeight:'bold',fontSize:16}}> OK </Text>
         </TouchableHighlight>
         </View>
         </View>

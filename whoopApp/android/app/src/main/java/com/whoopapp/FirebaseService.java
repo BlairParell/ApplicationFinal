@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 import android.app.NotificationChannel;
+import android.media.MediaPlayer;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -38,10 +39,16 @@ public class FirebaseService extends FirebaseMessagingService {
             //Intent intent = new Intent("com.whoopApp.NOTIFICATION");
             createNotificationChannel();
             sendNotification(remoteMessage.getData().get("key"));
+            makeSomeNoise();
             //sendBroadcast(intent);
             Log.d("Houston", "notification data: " + remoteMessage.getData().toString());
             Log.d("Houston", "we have a notification");
         }
+    }
+
+    private void makeSomeNoise(){
+        MediaPlayer thePlayer = MediaPlayer.create(getApplicationContext(), R.raw.whoop);
+        thePlayer.start();
     }
 
     private void sendNotification(String msg){

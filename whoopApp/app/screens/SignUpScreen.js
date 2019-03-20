@@ -8,7 +8,8 @@ import {
   Button,
   ActivityIndicator,
   KeyboardAvoidingView,
-  TouchableHighlight
+  TouchableHighlight,
+  ScrollView
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -52,7 +53,10 @@ export default class SignUp extends React.Component {
     headerTintColor: '#fff',
     headerTitleStyle: {
       fontWeight: 'bold',
-      fontSize: 20
+      fontSize: 20,
+      textAlign:"center", 
+      marginRight: 450 - Dimensions.get('window').width  ,
+      flex:1
     }
   };
   constructor(props) {
@@ -124,9 +128,11 @@ export default class SignUp extends React.Component {
 
   render() {
     return (
+      <ScrollView>
       <KeyboardAwareScrollView
         resetScrollToCoord={{x:0,y:0}}
         scrollEnabled={true}>
+      <View style={styles.mainContainer}>
         <View style={styles.container}>
           <Text style={styles.title}>
             Personal Info
@@ -142,6 +148,8 @@ export default class SignUp extends React.Component {
             returnKeyLabel={'next'}
             underlineColorAndroid='#fff'
             style={styles.input} />
+            <View style ={styles.inputLine}>
+            </View>
           <Text style={styles.text}>Last Name</Text>
           <TextInput
             onChangeText={(text) => this.setState({lastName:text})}
@@ -150,6 +158,8 @@ export default class SignUp extends React.Component {
             returnKeyLabel={'next'}
             underlineColorAndroid='#fff'
             style={styles.input} />
+            <View style ={styles.inputLine}>
+            </View>
           <Text style={styles.text}>Email Address</Text>
           <TextInput
             onChangeText={(text) => this.setState({emailAddress:text})}
@@ -158,6 +168,8 @@ export default class SignUp extends React.Component {
             returnKeyLabel={'next'}
             underlineColorAndroid='#fff'
             style={styles.input} />
+            <View style ={styles.inputLine}>
+            </View>
           <Text style={styles.text}>Phone Number</Text>
           <TextInput
             onChangeText={(text) => this.setState({mobileNo:text})}
@@ -166,6 +178,8 @@ export default class SignUp extends React.Component {
             returnKeyLabel={'next'}
             underlineColorAndroid='#fff'
             style={styles.input} />
+            <View style ={styles.inputLine}>
+            </View>
           <Text style={styles.text}>Password</Text>
           <TextInput
             onChangeText={(text) => this.setState({password:text})}
@@ -175,6 +189,8 @@ export default class SignUp extends React.Component {
             underlineColorAndroid='#fff'
             style={styles.input}
             secureTextEntry={true} />
+            <View style ={styles.inputLine}>
+            </View>
           <Text style={styles.text}>Confirm Password</Text>
           <TextInput
             onChangeText={(text) => this.setState({confirmPassword:text})}
@@ -184,7 +200,9 @@ export default class SignUp extends React.Component {
             underlineColorAndroid='#fff'
             style={styles.input}
             secureTextEntry={true} />
-          <Text style={styles.text}>WHOOP!!! Handle</Text>
+            <View style ={styles.inputLine}>
+            </View>
+          <Text style={styles.text}>Whoop Handle</Text>
           <TextInput
             onChangeText={(text) => this.setState({whoopHandle:text})}
             selectionColor={'black'}
@@ -192,16 +210,21 @@ export default class SignUp extends React.Component {
             returnKeyLabel={'done'}
             underlineColorAndroid='#fff'
             style={styles.input} />
+            <View style ={styles.inputLine}>
+            </View>
           </View>
           <View>
           <TouchableHighlight
             style={styles.button}
             onPress={this.onPress}
-            underlayColor='#565656'>
-            <Text style={{fontWeight:'bold'}}> Continue </Text>
+            underlayColor='#ffffff'>
+            <Text style={{color:'white',fontWeight:'bold', fontSize:16}}> Continue </Text>
           </TouchableHighlight>
         </View>
+      </View>
       </KeyboardAwareScrollView>
+      </ScrollView>
+      
     );
   }
 }
@@ -210,27 +233,40 @@ const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  mainContainer:{
+    backgroundColor:'#ffffff',
+   
+  },
   container: {
     paddingTop: 10,
     marginTop: DEVICE_HEIGHT / 100,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+
+    
   },
   container2: {
     padding: 15,
     alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+
   },
   button: {
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#DDDDDD',
-    marginHorizontal: 100
+    backgroundColor: '#500000',
+    marginHorizontal: 100,
+    borderRadius: 25,
+    marginBottom: 5, 
+    height: 50
   },
   text: {
     textAlign: 'left',
-    color: '#000'
+    color: '#500000',
+    fontWeight:'bold',
+    fontSize: 15,
+    paddingLeft:10
   },
   input: {
     marginBottom: 10,
@@ -242,12 +278,25 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     backgroundColor: '#ffffff',
     borderWidth: 1,
-    borderRadius: 5
+    borderRadius: 5, 
+    borderColor: '#ffffff',
+    
+    
+  },
+  inputLine:{
+    width: DEVICE_WIDTH - 70,
+    backgroundColor:'#500000',
+    height: 0.7,
+    marginLeft: 10,
+    marginTop: -15,
+    marginBottom: 15,
+    borderColor:'#500000'
+
   },
   title: {
-    fontSize: 20,
+    fontSize: 26,
     textAlign: 'center',
-    color: '#000000',
+    color: '#500000',
     fontWeight: 'bold'
   }
 });

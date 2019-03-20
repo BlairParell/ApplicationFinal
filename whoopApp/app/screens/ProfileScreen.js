@@ -70,6 +70,7 @@ static navigationOptions = ({navigation}) => ({
       <KeyboardAwareScrollView
         resetScrollToCoord={{x:0,y:0}}
         scrollEnabled={true}>
+     <View style={styles.mainContainer}>
       <View style={styles.container}>
         <Text style={styles.text}> First Name </Text>
         <TextInput placeholder='First Name'
@@ -79,6 +80,8 @@ static navigationOptions = ({navigation}) => ({
           returnKeyLabel={'next'}
           underlineColorAndroid='#fff'
           style={styles.input} />
+          <View style ={styles.inputLine}>
+            </View>
         <Text style={styles.text}> Last Name </Text>
         <TextInput placeholder='Last Name'
           editable={false}
@@ -87,6 +90,8 @@ static navigationOptions = ({navigation}) => ({
           returnKeyLabel={'next'}
           underlineColorAndroid='#fff'
           style={styles.input} />
+          <View style ={styles.inputLine}>
+            </View>
         <Text style={styles.text}> Email Adress </Text>
         <TextInput placeholder='Email Address'
           editable={false}
@@ -95,6 +100,8 @@ static navigationOptions = ({navigation}) => ({
           returnKeyLabel={'next'}
           underlineColorAndroid='#fff'
           style={styles.input} />
+          <View style ={styles.inputLine}>
+            </View>
         <Text style={styles.text}> Mobile Number (only digits) </Text>
         <TextInput placeholder='Mobile Number'
           editable={false}
@@ -103,20 +110,23 @@ static navigationOptions = ({navigation}) => ({
           returnKeyLabel={'done'}
           underlineColorAndroid='#fff'
           style={styles.input} />
+          <View style ={styles.inputLine}>
+            </View>
         </View>
         <View>
-        <TouchableHighlight
+        {/* <TouchableHighlight
           style={styles.button}
           onPress={this.onPress}
           underlayColor='#565656' >
-          <Text style={{color:'white'}}> SHARE MY AGGIE PRIDE </Text>
+          <Text style={{color:'white', fontWeight:'bold', fontSize: 14}}> Share My Aggie Pride </Text>
         </TouchableHighlight>
         <TouchableHighlight
           style={styles.button}
           onPress={this.onPress}
           underlayColor='#565656' >
-          <Text style={{color:'white'}}> MANAGE MY DEVICES </Text>
-        </TouchableHighlight>
+          <Text style={{color:'white', fontWeight:'bold',fontSize: 14}}> Manage My Devices </Text>
+        </TouchableHighlight> */}
+        </View>
         </View>
       </KeyboardAwareScrollView>
     );
@@ -124,8 +134,13 @@ static navigationOptions = ({navigation}) => ({
 }
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  mainContainer:{
+    backgroundColor:'#ffffff',
+    height: DEVICE_HEIGHT
+  },
   container: {
     padding: 15,
     alignItems: 'flex-start',
@@ -141,32 +156,49 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#500000',
-    marginHorizontal:50,
-    marginBottom: 3
+    marginHorizontal: 100,
+    borderRadius: 25,
+    marginBottom: 10, 
+    height: 50,
+    width: "50%"
   },
   description: {
     marginBottom: 20,
-    fontSize: 24,
+    fontSize: 18,
     textAlign: 'center',
     color: '#565656',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    paddingLeft: 10
   },
   text: {
     fontSize: 16,
     textAlign: 'left',
-    color: 'black'
+    color: '#500000',
+    paddingLeft:8,
+    fontWeight: 'bold'
   },
   input: {
     marginBottom: 10,
-    fontSize: 14,
+    fontSize: 18,
     textAlign: 'left',
-    color: '#500000',
+    color: '#000',
     width: DEVICE_WIDTH - 30,
-    height: 36,
+    height: 40,
     paddingLeft: 10,
     backgroundColor: '#ffffff',
     borderWidth: 1,
-    borderRadius: 5
+    borderRadius: 5, 
+    borderColor: '#ffffff',
+  },
+  inputLine:{
+    width: DEVICE_WIDTH - 70,
+    backgroundColor:'#500000',
+    height: 0.7,
+    marginLeft: 10,
+    marginTop: -15,
+    marginBottom: 15,
+    borderColor:'#500000'
+
   },
   title: {
     marginBottom: 20,

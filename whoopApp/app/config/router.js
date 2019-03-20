@@ -19,6 +19,7 @@ import EditProfileModal from '../screens/EditProfileModal';
 import SelectContactsModal from '../screens/SelectContactsModal';
 import PreviewMessageModal from '../screens/PreviewMessageModal';
 import AddContactModal from '../screens/AddContactModal';
+import ForgotPasswordConfirm from '../screens/ForgotPasswordConfirmScreen';
 
 const Tabs = TabNavigator({
 	Feed: {
@@ -50,6 +51,7 @@ const AuthStack = StackNavigator(
 	{
 		LogIn: LogIn,
 		ForgotPassword: ForgotPassword,
+		ForgotPasswordConfirm : ForgotPasswordConfirm,
 		SignUp: SignUp
 	},
 	{
@@ -92,7 +94,7 @@ const AppStack = StackNavigator({
   {
     mode: 'modal',
     navigationOptions: {
-      title: 'WHOOP!!! APP',
+      title: 'WHOOP APP',
       headerTintColor: '#fff',
       headerStyle: {
         backgroundColor: '#500000'

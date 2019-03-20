@@ -30,7 +30,7 @@ export default class AddPersonModal extends React.Component {
     this.params = this.props.navigation.state;
   }
 
-  onPress = () => {
+  onPress = () => { // delete contact button
     //alert("Feature under construction");
     console.log('user object')
     const { params } = this.params

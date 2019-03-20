@@ -7,6 +7,7 @@ import {
   StyleSheet,
   FlatList,
   AsyncStorage,
+  TextInput,
   TouchableHighlight,
   ActivityIndicator,
   Image
@@ -84,6 +85,8 @@ export default class Network extends React.Component {
       contacts: [],
       groups: [],
       sortedNetworkList: [],
+      displayingNetworkList: [],
+      search: "",
       flag: true,
       isLoading: true,
       buttonPressed: false
@@ -147,6 +150,35 @@ export default class Network extends React.Component {
       headerRight: params.headerRight
     };
   };*/
+
+  updateDisplayingList(text){
+    var network_list = this.state.sortedNetworkList;
+    if(text == null){
+      text = this.state.search;
+    }
+    var displaying_list = [];
+    console.log('testing update display messages');
+    //console.log(JSON.stringify(network_list))
+    for(m in network_list){
+      var obj = network_list[m];
+      var name = "";
+      if(obj.type == "contact"){
+        name = obj.first_name + obj.last_name;
+      } else {
+        name = obj.name
+      }
+      name = name.toLowerCase();
+      console.log(name);
+      console.log(text);
+      if(name.search(text.toLowerCase()) != -1){
+        displaying_list.push(obj);
+      }
+    }
+    this.setState({
+      search: text,
+      displayingNetworkList: displaying_list
+    })
+  }
 
   sortNetworkList(networkList){
     ntwObjName = function(networkObject){
@@ -255,23 +287,34 @@ export default class Network extends React.Component {
 
   updateContactsCallback(contacts, sortedNetworkList){
     console.log('networkScreenCallback')
-    console.log(JSON.stringify(sortedNetworkList))
     this.setState({
       contacts: contacts,
       isLoading: false,
       sortedNetworkList: sortedNetworkList
     })
+    if(this.state.search == ""){
+      this.setState({
+        displayingNetworkList: sortedNetworkList
+      })
+    } else {
+      this.updateDisplayingList();
+    }
   }
 
   updateGroupsCallback(groups, sortedNetworkList){
     console.log('groupsCallback')
-    console.log(JSON.stringify(groups))
-    console.log(JSON.stringify(sortedNetworkList))
     this.setState({
       groups: groups,
       isLoading: false,
       sortedNetworkList: sortedNetworkList
     })
+    if(this.state.search == ""){
+      this.setState({
+        displayingNetworkList: sortedNetworkList
+      })
+    } else {
+      this.updateDisplayingList();
+    }
   }
 
   supportPress(){
@@ -292,13 +335,20 @@ export default class Network extends React.Component {
 //<HandleObject navigation={this.props.navigation} object={item} />
 
   render() {
-    return (
+    return (      
+    <View style={styles.mainContainer}>
       <View style={styles.container}>
+      <TextInput
+        onChangeText={(text) => this.updateDisplayingList(text)}
+        underlineColorAndroid='transparent'
+        value={this.state.search}
+        placeholder= 'Search'
+        style={styles.input} />
         <Text style={styles.support} onPress={this.supportPress.bind(this)}>
-          WHOOP!!! SUPPORT
+          WHOOP SUPPORT
         </Text>
         <FlatList
-          data={this.state.sortedNetworkList}
+          data={this.state.displayingNetworkList}
           keyExtractor={(item, index)=>item.getId()}
           extraData={this.state}
           renderItem={({item}) =>
@@ -315,15 +365,22 @@ export default class Network extends React.Component {
           </View>
         }
       </View>
+      </View>
     );
   };
 }
 
 const styles = StyleSheet.create({
+  mainContainer:{
+    backgroundColor:'#ffffff',
+    height: Dimensions.get('window').height
+  },
   container: {
     padding: 15,
     marginTop: 10,
-    flex: 1
+    flex: 1,
+    backgroundColor:'#ffffff',
+    height: Dimensions.get('window').height 
   },
   container2: {
     flexDirection:'row',
@@ -336,11 +393,24 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     height:45
   },
+  input: {
+    marginBottom: 10,
+    textAlign: 'left',
+    color: '#000',
+    width: DEVICE_WIDTH - 30,
+    height: 40,
+    paddingLeft: 10,
+    backgroundColor: 'lightgray',
+    borderWidth: 1,
+    borderRadius: 5
+  },
   support: {
     color: '#DCDCDC',
     height: 30,
     fontSize: 18,
-    backgroundColor: '#500000'
+    backgroundColor: '#500000',
+    borderRadius: 15,
+    textAlign: 'center'
   },
   buttonToggled: {
     position: 'absolute',

@@ -9,7 +9,8 @@ import {
   AsyncStorage,
   Image,
   Platform,
-  ActivityIndicator
+  ActivityIndicator,
+  ToastAndroid
 } from 'react-native';
 import Dimensions from 'Dimensions';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -39,7 +40,7 @@ export default class SendMessageModal extends React.Component {
   static navigationOptions = ({navigation}) => {
 //    const { params = {} } = navigation.state;
     return {
-      title: 'Send WHOOP!!!',
+      title: 'Send Whoop!',
       headerStyle: {
         backgroundColor: '#500000'
       },
@@ -199,6 +200,7 @@ export default class SendMessageModal extends React.Component {
       console.log('user_ids: ' + user_ids)
       console.log('response: ' + JSON.stringify(responseData))
       this.insertNewMessage(new_message_id, msg_txt, user_ids, timestamp)
+      ToastAndroid.show('Message has been sent!',ToastAndroid.LONG)
       this.props.navigation.navigate('Feed');
     }).catch((error) => {
       alert("Network issue occurred... Please try again.")
@@ -255,6 +257,7 @@ export default class SendMessageModal extends React.Component {
 
     return (
       <View>
+       <View style={styles.mainContainer}>
         <View style={styles.container}>
         <TouchableHighlight
           onPress={this.goToContacts}
@@ -287,11 +290,16 @@ export default class SendMessageModal extends React.Component {
         }
         </View>
       </View>
+      </View>
     );
   };
 };
 
 const styles = StyleSheet.create({
+  mainContainer:{
+    backgroundColor:'#ffffff',
+    height: Dimensions.get('window').height
+  },
   container: {
     paddingHorizontal: 15,
     paddingTop: 20,
@@ -304,23 +312,32 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   to: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#500000',
-    marginTop: 5
+    marginTop: 5,
+    marginLeft: 5,
+   // flex: 2
+   
   },
   buttonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#000'
+    fontSize: 14,
+  //  fontWeight: 'bold',
+    color: '#fff',
+    textAlign:'center'
   },
   button: {
-    padding: 10,
+    flex:0.4,
+    padding: 8,
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#DDDDDD',
-    width: 80,
-    height: 40,
-    marginLeft: DEVICE_WIDTH - 260
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+    backgroundColor: 'green',
+    //width: 70,
+    //height: 40,
+    //marginHorizontal: 50,
+    marginLeft: 70,
+    //marginLeft: DEVICE_WIDTH - 230,
+    borderRadius: 15
   },
   text: {
     fontSize: 14,
@@ -336,7 +353,9 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     backgroundColor: '#ffffff',
     borderWidth: 1,
-    borderRadius: 5
+    borderRadius: 10,
+    borderColor: '#500000'
+   // backgroundColor:'#500000'
   },
   buttonText1: {
     fontSize: 14,

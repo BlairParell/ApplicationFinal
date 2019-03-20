@@ -43,7 +43,11 @@ export default class MessageModal extends React.Component {
     return (
       <View style={styles.container}>
       <View style={{flex:.9}}>
-      <Text style={styles.top}>WHOOP!!!</Text>
+      {/* <View stlye={{flex: 1, alignItems:'center'}}>
+      <Image source={require('../images/chatIcon.png')} style={{width: 90, height: 80, resizeMode:'contain', alignSelf:'flex-end', marginRight:120}} />
+
+      </View> */}
+      <Text style={styles.top}>Whoop!!!</Text>
       <Text style={styles.title}>{params.item.title}</Text>
       <Text style={styles.text}>{params.item.text}</Text>
       </View>
@@ -66,7 +70,7 @@ export default class MessageModal extends React.Component {
     return (
       <View style={styles.container}>
       <View style={{flex:.9}}>
-      <Text style={styles.top}>WHOOP!!!</Text>
+      <Text style={styles.top}>Whoop!!!</Text>
       <Text style={styles.title}>{params.item.title}</Text>
       <Text style={styles.text}>{params.item.text}</Text>
       </View>
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     flex: 1,
-    backgroundColor: '#500000',
+    backgroundColor: '#fff',
     paddingVertical: 60,
     paddingHorizontal: 30
   },
@@ -102,28 +106,43 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   top: {
-    fontSize: 50,
-    marginTop:10,
-    color: '#fff',
-    fontWeight: 'bold'
+    alignItems: 'center',
+    fontSize: 60,
+    //marginTop:5,
+    color: '#500000',
+    fontWeight: 'bold',
+    textAlign: 'center'
+    
   },
   title: {
-    fontSize: 20,
+    paddingLeft: 15,
+    marginTop: 15,
+    fontSize: 15,
     color: '#fff',
     alignItems: 'center',
-    fontWeight: 'bold',
-    marginBottom: 10
+  //  fontWeight: 'bold',
+    marginBottom: 10,
+    backgroundColor: '#500000',
+    borderRadius: 15,
+
   },
   text: {
-    fontSize: 26,
+    paddingTop: 10,
+    marginTop: 15,
+    paddingLeft: 15,
+    fontSize: 15,
     color: '#fff',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    marginBottom: 10
+    //textAlign: 'center',
+   // fontWeight: 'bold',
+    marginBottom: 10,
+    height: Dimensions.get('window').height - 550,
+    width: Dimensions.get('window').width - 100,
+    backgroundColor:'#500000',
+    borderRadius: 20,
   },
   sponsor: {
     fontSize: 16,
-    color: '#fff',
+    color: '#500000',
     fontWeight: 'bold',
     marginBottom: 10
   }

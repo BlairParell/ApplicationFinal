@@ -122,6 +122,7 @@ export default class EditProfileModal extends React.Component {
       <KeyboardAwareScrollView
         resetScrollToCoord={{x:0,y:0}}
         scrollEnabled={true}>
+      <View style={styles.mainContainer}>
         <View style={styles.container}>
           <Text style={styles.text}>First Name</Text>
           <TextInput
@@ -129,36 +130,48 @@ export default class EditProfileModal extends React.Component {
             underlineColorAndroid='transparent'
             value={this.state.f}
             style={styles.input} />
+            <View style ={styles.inputLine}>
+            </View>
           <Text style={styles.text}>Last Name</Text>
           <TextInput
             onChangeText={(text) => this.setState({l:text})}
             underlineColorAndroid='transparent'
             value={this.state.l}
             style={styles.input} />
+            <View style ={styles.inputLine}>
+            </View>
           <Text style={this.state.warning ? styles.warning : styles.text}>Current Password</Text>
           <TextInput
             secureTextEntry={true}
             onChangeText={(text) => this.setState({p:text})}
             underlineColorAndroid='transparent'
             style={styles.input} />
+            <View style ={styles.inputLine}>
+            </View>
           <Text style={this.state.warning ? styles.warning : styles.text}>Confirm Password</Text>
             <TextInput
               secureTextEntry={true}
               onChangeText={(text) => this.setState({p2:text})}
               underlineColorAndroid='transparent'
               style={styles.input} />
+              <View style ={styles.inputLine}>
+            </View>
           <Text style={styles.text}>Email Address</Text>
           <TextInput
             onChangeText={(text) => this.setState({e:text})}
             underlineColorAndroid='transparent'
             value={this.state.e}
             style={styles.input} />
+            <View style ={styles.inputLine}>
+            </View>
           <Text style={styles.text}>Mobile Number (only digits)</Text>
           <TextInput
             onChangeText={(text) => this.setState({m:text})}
             underlineColorAndroid='transparent'
             value={this.state.m}
             style={styles.input} />
+            <View style ={styles.inputLine}>
+            </View>
           </View>
           <View style={styles.container2}>
           <TouchableHighlight
@@ -173,6 +186,7 @@ export default class EditProfileModal extends React.Component {
             underlayColor='#565656'>
             <Text style={styles.buttonText2}>DEACTIVATE MY ACCOUNT</Text>
           </TouchableHighlight>
+        </View>
         </View>
       </KeyboardAwareScrollView>
       <PopupDialog
@@ -200,8 +214,13 @@ export default class EditProfileModal extends React.Component {
 }
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  mainContainer:{
+    backgroundColor:'#ffffff',
+    height: DEVICE_HEIGHT
+  },
   container: {
     paddingLeft: 15,
     paddingRight: 15,
@@ -217,27 +236,36 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#DDDDDD',
-    marginHorizontal: 50,
-    marginBottom: 10
+    backgroundColor: '#500000',
+    width: 200,
+    borderRadius: 25,
+    marginBottom: 10, 
+    height: 50
   },
   button2: {
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#f53229',
-    marginHorizontal: 30
+    width: 200,
+    borderRadius: 25,
+    marginBottom: 10, 
+    height: 50
   },
   warning: {
     textAlign: 'left',
     color: '#FF0000'
   },
   text: {
+    fontSize: 16,
     textAlign: 'left',
-    color: '#000'
+    color: '#500000',
+    paddingLeft:8,
+    fontWeight: 'bold'
   },
   input: {
     marginBottom: 10,
+    fontSize: 15,
     textAlign: 'left',
     color: '#000',
     width: DEVICE_WIDTH - 30,
@@ -245,9 +273,21 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     backgroundColor: '#ffffff',
     borderWidth: 1,
-    borderRadius: 5
+    borderRadius: 5, 
+    borderColor: '#ffffff',
+  },
+  inputLine:{
+    width: DEVICE_WIDTH - 70,
+    backgroundColor:'#500000',
+    height: 0.7,
+    marginLeft: 10,
+    marginTop: -15,
+    marginBottom: 15,
+    borderColor:'#500000'
+
   },
   buttonText1: {
+    color: '#fff',
     fontSize: 14,
     fontWeight: 'bold'
   },
