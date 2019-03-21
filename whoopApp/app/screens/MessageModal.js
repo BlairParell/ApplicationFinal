@@ -4,7 +4,7 @@ import {
   View,
   StyleSheet,
   TouchableHighlight,
-  Image
+  Image, BackAndroid
 } from 'react-native';
 
 import Dimensions from 'Dimensions';
@@ -26,11 +26,110 @@ export default class MessageModal extends React.Component {
   };
 
   componentDidMount() {
+   // this.props.navigation.state.params.onNavigateBack(this.state.foo)
     song.play();
   };
 
+
+  //new code
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: this.props.navigation.getParam('selectedMsg',''), // Sets the value of the message to the text of previous string if it's for forwarded msg else make it null
+      selectedContacts: [],
+      selectedGroups: [],
+      selectedString: 'Empty',
+      loading: false,
+      status: 'Read',
+      msg_id : this.props.navigation.state.params.item.id,
+     // onNavigate : this.props.navigation.state.params.onNavigateBack
+    //  receipt_id : this.props.navigation.getParam('receipt_id','')
+    }
+    //console.log("FIAN :"+ onNavigate)
+    this.handler = require('../DB.js')
+  };
+
+
+
+  
+
+  handleError(){
+    alert('Error sending message')
+  }
+
+  processUserIds(user_ids){
+    return 'To: ' + this.state.selectedString.replace('\n', ', ')
+  }
+
+  
+
+  postMessage(user_id, session_token, status, timestamp, sender_id, msg_guid){
+    // console.log('contacts')
+    // console.log(JSON.stringify(recp_id_list))
+    // console.log('groups')
+    // console.log(JSON.stringify(recp_grp_id_list))
+    // recp_id_list = this.process_recp_list(recp_id_list)
+    // recp_grp_id_list = this.process_recp_list(recp_grp_id_list)
+    // console.log('processed grp id list')
+    // console.log(JSON.stringify(recp_grp_id_list))
+    fetch('https://n4dwn5g227.execute-api.us-east-2.amazonaws.com/testing/messages', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+         user_id: user_id,
+       //  session_token: session_token,
+         status: status,
+         timestamp : timestamp,
+         sender_id : sender_id,
+         msg_guid : msg_guid
+        // list_of_user_ids: recp_id_list,
+        // list_of_off_network_ids: "",
+        // list_of_group_ids: recp_grp_id_list,
+        // message_text: msg_txt
+      })
+    })
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.log('NEW response')
+      console.log(JSON.stringify(responseData))
+      if(responseData.Failed){
+        this.handleError()
+        return
+      }
+      // var new_message_id = responseData.guid
+      // var timestamp = responseData.timestamp
+      // var user_ids = responseData.list_of_user_ids
+      // console.log('guid: ' + new_message_id)
+      // console.log('timestamp: ' + timestamp)
+      // console.log('user_ids: ' + user_ids)
+      console.log('response STATUS : ' + JSON.stringify(responseData))
+    //  this.insertNewMessage(new_message_id, msg_txt, user_ids, timestamp)
+    //  ToastAndroid.show('Message has been sent!',ToastAndroid.LONG)
+     // this.props.navigation.navigate('Feed');
+    }).catch((error) => {
+      alert("Network issue occurred... Please try again.")
+      console.error(error)
+    })
+  }
+
+  send_message(){
+   // console.log("GETTING CALLED 01 : ")
+    var user_id = this.handler.getUserId()
+    //console.log("NEW 900 : "+ user_id)
+    var session_token = this.handler.getSessionToken()
+    this.postMessage(user_id, session_token ,this.state.status,this.props.navigation.state.params.item.timestamp,this.props.navigation.state.params.item.sender_id, this.props.navigation.state.params.item.id )
+  }
+  //new code
+
+
   componentWillUnmount() {
+    //this.props.navigation.state.params.onNavigateBack(this.state.foo)
     song.stop();
+
   };
 
   onPressReply(){
@@ -63,10 +162,17 @@ export default class MessageModal extends React.Component {
   }
 
   render() {
+    BackAndroid.addEventListener("hardwareBackPress", () => {
+      this.props.navigation.state.params.onNavigateBack(this.state.message)
+    })
+    
+
+    // console.log("NEW 6 @ : " + this.state.receipt_id)
     const { params } = this.props.navigation.state;
     if(!params.item.sender_id){
       return this.render_sent();
     } else {
+      this.send_message();
     return (
       <View style={styles.container}>
       <View style={{flex:.9}}>

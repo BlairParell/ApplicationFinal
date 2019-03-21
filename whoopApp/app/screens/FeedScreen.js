@@ -10,7 +10,8 @@ import {
   RefreshControl,
   ActivityIndicator,
   NativeModules,
-  DeviceEventEmitter, TouchableOpacity, NetInfo, Alert
+  DeviceEventEmitter, TouchableOpacity, NetInfo, Alert,
+  BackAndroid
 } from 'react-native';
 import DropDown from '../customButtons/DropDownButton';
 import Dimensions from 'Dimensions';
@@ -52,6 +53,7 @@ function MiniOfflineSign() {
   </View>
 );
 }
+
 // function handleConnectivityChange = isConnected => {
 //   this.setState({ isConnected });
 // }
@@ -69,13 +71,28 @@ class Message extends React.Component{
       isModalVisible: false,
       isConnected: true
     };
+    
+    this.handler = require('../DB.js')
+    console.log('we have a handler')
   }
-
+  handleOnNavigateBack(foo) {
+    // this.setState({
+    //   foo
+    // })
+    b = new Feed();
+    b._onRefresh()
+    //this._onRefresh()
+    //this._onRefresh()
+  }
+ 
   onPress = () => {
+   
     this.navigation.navigate('MessageModal', {
-      item: this.props.item
+      item: this.props.item, receipt_id : this.handler.user_id,
+      onNavigateBack: this.handleOnNavigateBack.bind(this)
 
     });
+    
   };
   _toggleModal = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
@@ -100,12 +117,123 @@ class Message extends React.Component{
     this.addContactCallback(this.item.id);
     this._toggleModal();
   }
+  whiteRender = () => {
+    return(
+        <TouchableHighlight onPress={this.onPress} onLongPress={this._toggleModal}>
+        <View style={{flexDirection:'row',flexWrap:'wrap',backgroundColor:'#fff',borderRadius:10}}
+          
+          marginBottom={2}
+          paddingHorizontal={0}
+          paddingVertical={8}
+          width={DEVICE_WIDTH-30}>
+          <Modal isVisible={this.state.isModalVisible}
+          animationIn='slideInUp'
+          backdropColor='black'
+          onBackdropPress={() => this.setState({ isModalVisible: false })}
 
+          >
+           <View style={{ width:'80%', height:'60%', backgroundColor:'transparent', justifyContent:'center', alignSelf:'center' }}>
+            <View style={{flexDirection:'column', justifyContent:'space-between'}}>
+            <TouchableOpacity onPress={this.onReplyPress}>
+            <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20, marginTop: 20 }}>
+              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Reply</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.onForwardPress}>
+              
+              <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20 }}>
+              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Forward</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.onHidePress}>
+            <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:"#fff", marginBottom: 20 }}>
+              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Delete</Text>
+              </View>
+            </TouchableOpacity>
+            <View style={this.unknownContact ? null : {display:"none"}}>
+            <TouchableOpacity onPress={this.onAddContactPress}>
+            <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20 }}>
+              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Add Contact</Text>
+              </View>
+            </TouchableOpacity>
+            </View>
+            {/* <View style={{ width:'80%', height:'50%', backgroundColor:'#500000', justifyContent:'center', alignSelf:'center' }}>
+            <View style={{flexDirection:'column', justifyContent:'space-between'}}>
+            <TouchableOpacity onPress={this.onReplyPress}>
+              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:5}}>Reply</Text>
+              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.onForwardPress}>
+              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Forward</Text>
+              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.onHidePress}>
+              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Hide</Text>
+              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+              </View>
+            </TouchableOpacity> */}
+            {/* <TouchableOpacity onPress={this._toggleModal}>
+              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Block User</Text>
+              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this._toggleModal}>
+              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Report</Text>
+              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+              </View>
+            </TouchableOpacity> */}
+            <TouchableOpacity onPress={this._toggleModal}>
+            <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 10 }}>
+              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Close</Text>
+              </View>
+
+            </TouchableOpacity>
+            </View>
+          </View>
+          </Modal>
+
+          {/* <MiniOfflineSign /> */}
+          <View style={{flexDirection:'column', flex:1}}>
+          <View style={{flex:1, flexDirection:'row'}}>
+          <View style={{justifyContent:'flex-start'}}>
+          <Text style={{paddingLeft:15,textAlign:'left', color:'#000',width:(DEVICE_WIDTH-30)/2}}>{this.props.item.title}</Text>
+          </View>
+          <View style={{justifyContent:'flex-end'}}>
+          <Text style={{paddingRight:10,textAlign:'right', color:'#000',width:(DEVICE_WIDTH-30)/2}}>{this.props.item.date}</Text>
+          </View>
+          </View>
+          <View style={{flex:1, flexDirection:'row'}}>
+          <View style={{flex :1,justifyContent:'flex-start'}}>
+          <Text style={{paddingHorizontal:15,textAlign:'left', color:'#000'}}>{this.props.item.text}</Text>
+          </View>
+          <View style={this.item.bColor==='#282828' ? null : {display:"none"} }>
+          <View style={{flex: 0.4,justifyContent:'flex-end', paddingRight: 15}}>
+          <View style={{justifyContent:'flex-end',width:0,height:0,backgroundColor:'transparent',borderStyle:'solid',borderLeftWidth:10,borderRightWidth:10,borderBottomWidth:15,borderLeftColor:'transparent',borderRightColor:'transparent',borderBottomColor:'white'}}>
+          </View>
+          </View>
+          </View>
+          </View>
+          {/* <View style={{paddingRight:10,alignItems:'right', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}> */}
+          </View>
+          {/* </View> */}
+        </View>
+        {/* </View> */}
+      </TouchableHighlight>
+
+
+    )
+
+  }
   render = () => {
-    console.log("ALI : "+ this.props.item)
+  
     // if (!this.state.isConnected) {
     //   return ( <MiniOfflineSign /> );
     // }
+    if(this.props.item.statuss === 'read'){
+      return this.whiteRender();
+    } else {
     return(
 
       <TouchableHighlight onPress={this.onPress} onLongPress={this._toggleModal}>
@@ -211,6 +339,7 @@ class Message extends React.Component{
         {/* </View> */}
       </TouchableHighlight>
     );
+   }
   }
 }
 
@@ -222,7 +351,7 @@ export default class Feed extends React.Component {
       profile={false}
     />//
   });
-
+ 
 
   constructor(props) {
     super(props);
@@ -275,7 +404,7 @@ export default class Feed extends React.Component {
     })
     .then((response) => response.json())
     .then((responseData) => {
-      console.log('response data')
+      console.log('response data Feed2 : ')
       console.log(JSON.stringify(responseData))
       this.processMessages(responseData, callback)
     }).catch((error) => {
@@ -300,7 +429,7 @@ export default class Feed extends React.Component {
     })
     .then((response) => response.json())
     .then((responseData) => {
-      console.log('response data')
+      console.log('response data Feed : ')
       console.log(JSON.stringify(responseData))
       if(responseData.message || responseData.errorMessage){
         this.setState({refreshing:false})
@@ -391,8 +520,9 @@ export default class Feed extends React.Component {
       console.error(error)
     })
   }
-
+  
   componentDidMount(){
+   // this._onRefresh()
    // NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
     DeviceEventEmitter.addListener('newNotification', this._onRefresh.bind(this))
     //this._onRefresh()
@@ -563,6 +693,7 @@ export default class Feed extends React.Component {
   }
 
   render() {
+    
     return (
       <View style={styles.container}>
         {this.state.empty &&
@@ -665,3 +796,4 @@ offlineText: {
   color: '#fff'
 },
 });
+
