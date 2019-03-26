@@ -56,7 +56,7 @@ onPress = () => {
             underlayColor='#565656' >
             <Text> REPORT BUG </Text>
           </TouchableHighlight>
-          <Text>v0.11.6</Text>
+          <Text>v0.12.1</Text>
         </View>
       </View>
     );

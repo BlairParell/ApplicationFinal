@@ -176,7 +176,7 @@ export default class MessageModal extends React.Component {
     return (
       <View style={styles.container}>
       <View style={{flex:.9}}>
-      <Text style={styles.top}>Whoop!!!</Text>
+      <Text style={styles.top}>WHOOP!!!</Text>
       <Text style={styles.title}>{params.item.title}</Text>
       <Text style={styles.text}>{params.item.text}</Text>
       </View>
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#500000',
     paddingVertical: 60,
     paddingHorizontal: 30
   },
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontSize: 60,
     //marginTop:5,
-    color: '#500000',
+    color: '#fff',
     fontWeight: 'bold',
     textAlign: 'center'
     
@@ -223,20 +223,22 @@ const styles = StyleSheet.create({
   title: {
     paddingLeft: 15,
     marginTop: 15,
-    fontSize: 15,
+    fontSize: 20,
     color: '#fff',
     alignItems: 'center',
   //  fontWeight: 'bold',
     marginBottom: 10,
     backgroundColor: '#500000',
     borderRadius: 15,
+    textAlign:'center',
+    fontWeight:'bold'
 
   },
   text: {
     paddingTop: 10,
     marginTop: 15,
     paddingLeft: 15,
-    fontSize: 15,
+    fontSize: 30,
     color: '#fff',
     //textAlign: 'center',
    // fontWeight: 'bold',
@@ -245,10 +247,11 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width - 100,
     backgroundColor:'#500000',
     borderRadius: 20,
+    fontWeight:'bold'
   },
   sponsor: {
     fontSize: 16,
-    color: '#500000',
+    color: '#fff',
     fontWeight: 'bold',
     marginBottom: 10
   }

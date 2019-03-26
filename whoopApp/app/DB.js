@@ -38,7 +38,7 @@ class RecvMessageObject extends MessageObject {
 }
 
 class SentMessageObject extends MessageObject {
-  constructor(id, text, title, timestamp){
+  constructor(id, text, title, timestamp, sender_id,statuss){
     super();
     this.id = id;
     this.text = text;
@@ -49,6 +49,9 @@ class SentMessageObject extends MessageObject {
     this.bColor = '#282828';
     this.tColor = '#fff';
     this.unknown = false;
+    this.sender_id = sender_id;
+    this.statuss = statuss;
+
   }
   processTimestamp(timestamp){
     this.timestamp = timestamp
@@ -328,7 +331,7 @@ class localStorageHandler{
   }
   makeMessageObject(msg_data){
     if(msg_data.sent){
-      return new SentMessageObject(msg_data.msg_id, msg_data.text, msg_data.title, msg_data.timestamp);
+      return new SentMessageObject(msg_data.msg_id, msg_data.text, msg_data.title, msg_data.timestamp, msg_data.sender_id, msg_data.statuss);
     } else {
       var unknown = this.isUnknown(msg_data.sender_id);
       return new RecvMessageObject(msg_data.msg_id, msg_data.text, msg_data.title, msg_data.timestamp, msg_data.sender_id, unknown, msg_data.statuss);

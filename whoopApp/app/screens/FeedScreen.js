@@ -11,7 +11,8 @@ import {
   ActivityIndicator,
   NativeModules,
   DeviceEventEmitter, TouchableOpacity, NetInfo, Alert,
-  BackAndroid
+  BackAndroid,
+  Image
 } from 'react-native';
 import DropDown from '../customButtons/DropDownButton';
 import Dimensions from 'Dimensions';
@@ -79,8 +80,8 @@ class Message extends React.Component{
     // this.setState({
     //   foo
     // })
-    b = new Feed();
-    b._onRefresh()
+   b = new Feed();
+   b._onRefresh()
     //this._onRefresh()
     //this._onRefresh()
   }
@@ -103,11 +104,19 @@ class Message extends React.Component{
   onReplyPress = () => { // Logic for replying to msgs
     this.setState({ isModalVisible: !this.state.isModalVisible }); // For showing the menu
     //const { params } = this.props.item;
-    this.navigation.navigate('SendMessageModal', {selectedString: this.props.item.title.slice(4,this.props.item.title.length), selectedContacts: [{'id':this.props.item.sender_id}]}); // For Replying to msg
+    console.log("CHASA:" + this.props.item)
+    console.log(this.props.item)
+    console.log("SENDER: "+ this.handler.getUserId())
+    
+    this.navigation.navigate('SendMessageModal', {selectedString: this.props.item.title.slice(4,this.props.item.title.length), selectedContacts: [{'id':this.props.item.sender_id}], onNavigateBack: this.handleOnNavigateBack.bind(this)}); // For Replying to msg
+
+   // this.navigation.navigate('SendMessageModal', {selectedString: this.props.item.title.slice(4,this.props.item.title.length), selectedContacts: [{'id':this.handler.getUserId()}]}); // For Replying to msg
+    //this.navigation.navigate('SendMessageModal', {selectedString: this.props.item.title.slice(4,this.props.item.title.length), selectedContacts: this.props.item.sender_id}); // For Replying to msg
+
   }
   onForwardPress = () => { // Logic for forwarding the msg
     this.setState({ isModalVisible: !this.state.isModalVisible }); // For showing the menu
-    this.navigation.navigate('SendMessageModal', {selectedMsg: this.props.item.text}); // For forwarding the msgs
+    this.navigation.navigate('SendMessageModal', {selectedMsg: this.props.item.text, onNavigateBack: this.handleOnNavigateBack.bind(this)}); // For forwarding the msgs
   }
   onHidePress = () => { // Logic for hiding the msg
     this.hideMessageCallback(this.props.item);
@@ -231,8 +240,9 @@ class Message extends React.Component{
     // if (!this.state.isConnected) {
     //   return ( <MiniOfflineSign /> );
     // }
-    if(this.props.item.statuss === 'read'){
-      return this.whiteRender();
+    if(this.props.item.sent === false){
+      if(this.props.item.statuss === 'read')
+      return this.whiteRender();  
     } else {
     return(
 
@@ -326,10 +336,20 @@ class Message extends React.Component{
           <Text style={{paddingHorizontal:15,textAlign:'left', color:this.props.item.tColor}}>{this.props.item.text}</Text>
           </View>
           <View style={this.item.bColor==='#282828' ? null : {display:"none"} }>
-          <View style={{flex: 0.4,justifyContent:'flex-end', paddingRight: 15}}>
-          <View style={{justifyContent:'flex-end',width:0,height:0,backgroundColor:'transparent',borderStyle:'solid',borderLeftWidth:10,borderRightWidth:10,borderBottomWidth:15,borderLeftColor:'transparent',borderRightColor:'transparent',borderBottomColor:'white'}}>
-          </View>
-          </View>
+           <View style={this.item.statuss==='read' ? null : {display:"none"} }>
+            <View style={{flex: 0.4,justifyContent:'flex-end', paddingRight: 15}}>
+          {/* <View style={{justifyContent:'flex-end',width:0,height:0,backgroundColor:'transparent',borderStyle:'solid',borderLeftWidth:10,borderRightWidth:10,borderBottomWidth:15,borderLeftColor:'transparent',borderRightColor:'transparent',borderBottomColor:'white'}}> */}
+          {/* </View> */}
+               <Image source={require('../images/traingleFull.png')} style={{width: 20, height: 20, resizeMode:'contain', alignSelf:'flex-end'}} />
+            </View>
+           </View>
+           <View style={this.item.statuss==='unread' ? null : {display:"none"} }>
+            <View style={{flex: 0.4,justifyContent:'flex-end', paddingRight: 15}}>
+          {/* <View style={{justifyContent:'flex-end',width:0,height:0,backgroundColor:'transparent',borderStyle:'solid',borderLeftWidth:10,borderRightWidth:10,borderBottomWidth:15,borderLeftColor:'transparent',borderRightColor:'transparent',borderBottomColor:'white'}}> */}
+          {/* </View> */}
+               <Image source={require('../images/traingleHalf.png')} style={{width: 20, height: 20, resizeMode:'contain', alignSelf:'flex-end'}} />
+            </View>
+           </View>
           </View>
           </View>
           {/* <View style={{paddingRight:10,alignItems:'right', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}> */}

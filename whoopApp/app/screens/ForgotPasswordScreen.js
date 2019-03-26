@@ -7,7 +7,8 @@ import {
   View,
   Button,
   ActivityIndicator,
-  TouchableHighlight
+  TouchableHighlight,
+  Keyboard
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -31,6 +32,10 @@ export default class ForgotPassword extends React.Component {
       email_address: ''
     };
   };
+
+  componentWillUnmount(){
+    Keyboard.dismiss()
+  }
 
   async fetchData(email) {
     try {
@@ -83,7 +88,9 @@ export default class ForgotPassword extends React.Component {
     return (
       <KeyboardAwareScrollView
         resetScrollToCoord={{ x:0, y:0 }}
-        scrollEnabled={true}>
+        scrollEnabled={true}
+        keyboardShouldPersistTaps={true}
+        >
       <View style={styles.mainContainer}>
         <View style={styles.container}>
         <Text style={styles.title}>
@@ -107,7 +114,8 @@ export default class ForgotPassword extends React.Component {
         <TouchableHighlight
           style={styles.button}
           underlayColor='#565656'
-          onPress={this._changePassword} >
+         // onPress={this._changePassword} >
+         onPress={() => {Keyboard.dismiss; this._changePassword()}} >
           <Text style={{color:'white',fontWeight:'bold',fontSize:16}}> Send </Text>
         </TouchableHighlight>
         </View>

@@ -105,10 +105,17 @@ export default class SendMessageModal extends React.Component {
         selectedContacts: params.selectedContacts,
         selectedString: params.selectedString
       })
-
+    
 
 
     }
+    // else if (params.selectedString)
+    // {
+    //   this.setState({
+    //     //selectedContacts: params.selectedString,
+    //     selectedString: params.selectedString
+    //   })
+    // }
     this.props.navigation.setParams({ _dropdownOptionsParams: this. _dropdownOptions });
   }
 
@@ -201,6 +208,7 @@ export default class SendMessageModal extends React.Component {
       console.log('response: ' + JSON.stringify(responseData))
       this.insertNewMessage(new_message_id, msg_txt, user_ids, timestamp)
       ToastAndroid.show('Message has been sent!',ToastAndroid.LONG)
+      this.props.navigation.state.params.onNavigateBack(this.state.message)
       this.props.navigation.navigate('Feed');
     }).catch((error) => {
       alert("Network issue occurred... Please try again.")
@@ -322,7 +330,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 14,
   //  fontWeight: 'bold',
-    color: '#fff',
+    color: '#000',
     textAlign:'center'
   },
   button: {
@@ -331,7 +339,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     alignSelf: 'flex-end',
-    backgroundColor: 'green',
+    backgroundColor: '#DDDDDD',
     //width: 70,
     //height: 40,
     //marginHorizontal: 50,

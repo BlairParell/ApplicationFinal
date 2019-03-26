@@ -7,7 +7,8 @@ import {
   View,
   Button,
   ActivityIndicator,
-  TouchableHighlight
+  TouchableHighlight,
+  Keyboard
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -31,6 +32,9 @@ export default class ForgotPasswordConfirm extends React.Component {
       email_address: ''
     };
   };
+  componentDidMount(){
+    Keyboard.dismiss()
+  }
 
   async fetchData(email) {
     try {
@@ -82,7 +86,9 @@ export default class ForgotPasswordConfirm extends React.Component {
     return (
       <KeyboardAwareScrollView
         resetScrollToCoord={{ x:0, y:0 }}
-        scrollEnabled={true}>
+        scrollEnabled={true}
+        keyboardShouldPersistTaps={true}
+        >
       <View style={styles.mainContainer}>
         <View style={styles.container}>
         <Text style={styles.title}>
