@@ -77,14 +77,25 @@ class Message extends React.Component{
     console.log('we have a handler')
   }
   handleOnNavigateBack(foo) {
-    // this.setState({
-    //   foo
-    // })
+     this.setState({
+       state: this.state
+     })
    b = new Feed();
-   b._onRefresh()
+   b._onRefresh();
+ // this.forceUpdate()
     //this._onRefresh()
     //this._onRefresh()
   }
+  handleOnNavigateBack2(foo) {
+    this.setState({
+      state: this.state
+    })
+  b = new Feed();
+  b._onRefresh();
+// this.forceUpdate()
+   //this._onRefresh()
+   //this._onRefresh()
+ }
  
   onPress = () => {
    
@@ -108,7 +119,7 @@ class Message extends React.Component{
     console.log(this.props.item)
     console.log("SENDER: "+ this.handler.getUserId())
     
-    this.navigation.navigate('SendMessageModal', {selectedString: this.props.item.title.slice(4,this.props.item.title.length), selectedContacts: [{'id':this.props.item.sender_id}], onNavigateBack: this.handleOnNavigateBack.bind(this)}); // For Replying to msg
+    this.navigation.navigate('SendMessageModal', {selectedString: this.props.item.title.slice(4,this.props.item.title.length), selectedContacts: [{'id':this.props.item.sender_id}], onNavigateBack2: this.handleOnNavigateBack2.bind(this)}); // For Replying to msg
 
    // this.navigation.navigate('SendMessageModal', {selectedString: this.props.item.title.slice(4,this.props.item.title.length), selectedContacts: [{'id':this.handler.getUserId()}]}); // For Replying to msg
     //this.navigation.navigate('SendMessageModal', {selectedString: this.props.item.title.slice(4,this.props.item.title.length), selectedContacts: this.props.item.sender_id}); // For Replying to msg
@@ -116,7 +127,7 @@ class Message extends React.Component{
   }
   onForwardPress = () => { // Logic for forwarding the msg
     this.setState({ isModalVisible: !this.state.isModalVisible }); // For showing the menu
-    this.navigation.navigate('SendMessageModal', {selectedMsg: this.props.item.text, onNavigateBack: this.handleOnNavigateBack.bind(this)}); // For forwarding the msgs
+    this.navigation.navigate('SendMessageModal', {selectedMsg: this.props.item.text, onNavigateBack2: this.handleOnNavigateBack2.bind(this)}); // For forwarding the msgs
   }
   onHidePress = () => { // Logic for hiding the msg
     this.hideMessageCallback(this.props.item);
@@ -166,33 +177,7 @@ class Message extends React.Component{
               </View>
             </TouchableOpacity>
             </View>
-            {/* <View style={{ width:'80%', height:'50%', backgroundColor:'#500000', justifyContent:'center', alignSelf:'center' }}>
-            <View style={{flexDirection:'column', justifyContent:'space-between'}}>
-            <TouchableOpacity onPress={this.onReplyPress}>
-              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:5}}>Reply</Text>
-              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.onForwardPress}>
-              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Forward</Text>
-              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.onHidePress}>
-              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Hide</Text>
-              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
-              </View>
-            </TouchableOpacity> */}
-            {/* <TouchableOpacity onPress={this._toggleModal}>
-              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Block User</Text>
-              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this._toggleModal}>
-              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Report</Text>
-              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
-              </View>
-            </TouchableOpacity> */}
+         
             <TouchableOpacity onPress={this._toggleModal}>
             <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 10 }}>
               <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Close</Text>
@@ -235,131 +220,249 @@ class Message extends React.Component{
     )
 
   }
+  maroonRender = () => {
+    return(
+      <TouchableHighlight onPress={this.onPress} onLongPress={this._toggleModal}>
+      <View style={{flexDirection:'row',flexWrap:'wrap',backgroundColor:this.item.bColor,borderRadius:10}}
+        
+        marginBottom={2}
+        paddingHorizontal={0}
+        paddingVertical={8}
+        width={DEVICE_WIDTH-30}>
+        <Modal isVisible={this.state.isModalVisible}
+        animationIn='slideInUp'
+        backdropColor='black'
+        onBackdropPress={() => this.setState({ isModalVisible: false })}
+
+        >
+         <View style={{ width:'80%', height:'60%', backgroundColor:'transparent', justifyContent:'center', alignSelf:'center' }}>
+          <View style={{flexDirection:'column', justifyContent:'space-between'}}>
+          <TouchableOpacity onPress={this.onReplyPress}>
+          <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20, marginTop: 20 }}>
+            <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Reply</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.onForwardPress}>
+            
+            <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20 }}>
+            <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Forward</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.onHidePress}>
+          <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:"#fff", marginBottom: 20 }}>
+            <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Delete</Text>
+            </View>
+          </TouchableOpacity>
+          <View style={this.unknownContact ? null : {display:"none"}}>
+          <TouchableOpacity onPress={this.onAddContactPress}>
+          <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20 }}>
+            <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Add Contact</Text>
+            </View>
+          </TouchableOpacity>
+          </View>
+          {/* <View style={{ width:'80%', height:'50%', backgroundColor:'#500000', justifyContent:'center', alignSelf:'center' }}>
+          <View style={{flexDirection:'column', justifyContent:'space-between'}}>
+          <TouchableOpacity onPress={this.onReplyPress}>
+            <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:5}}>Reply</Text>
+            <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.onForwardPress}>
+            <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Forward</Text>
+            <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.onHidePress}>
+            <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Hide</Text>
+            <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+            </View>
+          </TouchableOpacity> */}
+          {/* <TouchableOpacity onPress={this._toggleModal}>
+            <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Block User</Text>
+            <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this._toggleModal}>
+            <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Report</Text>
+            <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+            </View>
+          </TouchableOpacity> */}
+          <TouchableOpacity onPress={this._toggleModal}>
+          <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 10 }}>
+            <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Close</Text>
+            </View>
+
+          </TouchableOpacity>
+          </View>
+        </View>
+        </Modal>
+
+        {/* <MiniOfflineSign /> */}
+        <View style={{flexDirection:'column', flex:1}}>
+        <View style={{flex:1, flexDirection:'row'}}>
+        <View style={{justifyContent:'flex-start'}}>
+        <Text style={{paddingLeft:15,textAlign:'left', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}>{this.props.item.title}</Text>
+        </View>
+        <View style={{justifyContent:'flex-end'}}>
+        <Text style={{paddingRight:10,textAlign:'right', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}>{this.props.item.date}</Text>
+        </View>
+        </View>
+        <View style={{flex:1, flexDirection:'row'}}>
+        <View style={{flex :1,justifyContent:'flex-start'}}>
+        <Text style={{paddingHorizontal:15,textAlign:'left', color:this.props.item.tColor}}>{this.props.item.text}</Text>
+        </View>
+        <View style={this.item.bColor==='#282828' ? null : {display:"none"} }>
+         <View style={this.item.statuss==='read' ? null : {display:"none"} }>
+          <View style={{flex: 0.4,justifyContent:'flex-end', paddingRight: 15}}>
+        {/* <View style={{justifyContent:'flex-end',width:0,height:0,backgroundColor:'transparent',borderStyle:'solid',borderLeftWidth:10,borderRightWidth:10,borderBottomWidth:15,borderLeftColor:'transparent',borderRightColor:'transparent',borderBottomColor:'white'}}> */}
+        {/* </View> */}
+             <Image source={require('../images/traingleFull.png')} style={{width: 20, height: 20, resizeMode:'contain', alignSelf:'flex-end'}} />
+          </View>
+         </View>
+         <View style={this.item.statuss==='unread' ? null : {display:"none"} }>
+          <View style={{flex: 0.4,justifyContent:'flex-end', paddingRight: 15}}>
+        {/* <View style={{justifyContent:'flex-end',width:0,height:0,backgroundColor:'transparent',borderStyle:'solid',borderLeftWidth:10,borderRightWidth:10,borderBottomWidth:15,borderLeftColor:'transparent',borderRightColor:'transparent',borderBottomColor:'white'}}> */}
+        {/* </View> */}
+             <Image source={require('../images/traingleHalf.png')} style={{width: 20, height: 20, resizeMode:'contain', alignSelf:'flex-end'}} />
+          </View>
+         </View>
+        </View>
+        </View>
+        {/* <View style={{paddingRight:10,alignItems:'right', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}> */}
+        </View>
+        {/* </View> */}
+      </View>
+      {/* </View> */}
+    </TouchableHighlight>
+  )
+  }
   render = () => {
   
     // if (!this.state.isConnected) {
     //   return ( <MiniOfflineSign /> );
     // }
-    if(this.props.item.sent === false){
-      if(this.props.item.statuss === 'read')
-      return this.whiteRender();  
-    } else {
-    return(
-
-      <TouchableHighlight onPress={this.onPress} onLongPress={this._toggleModal}>
-        <View style={{flexDirection:'row',flexWrap:'wrap',backgroundColor:this.item.bColor,borderRadius:10}}
+    if(this.props.item.sent === false && this.props.item.statuss === 'read')
+    { return this.whiteRender();
+    //   if(this.props.item.statuss === 'read')
+    //   {return this.whiteRender();}
+    //   else{return null}  
+    } 
+    else{return this.maroonRender();}
+    // return(
+    //     <TouchableHighlight onPress={this.onPress} onLongPress={this._toggleModal}>
+    //     <View style={{flexDirection:'row',flexWrap:'wrap',backgroundColor:this.item.bColor,borderRadius:10}}
           
-          marginBottom={2}
-          paddingHorizontal={0}
-          paddingVertical={8}
-          width={DEVICE_WIDTH-30}>
-          <Modal isVisible={this.state.isModalVisible}
-          animationIn='slideInUp'
-          backdropColor='black'
-          onBackdropPress={() => this.setState({ isModalVisible: false })}
+    //       marginBottom={2}
+    //       paddingHorizontal={0}
+    //       paddingVertical={8}
+    //       width={DEVICE_WIDTH-30}>
+    //       <Modal isVisible={this.state.isModalVisible}
+    //       animationIn='slideInUp'
+    //       backdropColor='black'
+    //       onBackdropPress={() => this.setState({ isModalVisible: false })}
 
-          >
-           <View style={{ width:'80%', height:'60%', backgroundColor:'transparent', justifyContent:'center', alignSelf:'center' }}>
-            <View style={{flexDirection:'column', justifyContent:'space-between'}}>
-            <TouchableOpacity onPress={this.onReplyPress}>
-            <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20, marginTop: 20 }}>
-              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Reply</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.onForwardPress}>
+    //       >
+    //        <View style={{ width:'80%', height:'60%', backgroundColor:'transparent', justifyContent:'center', alignSelf:'center' }}>
+    //         <View style={{flexDirection:'column', justifyContent:'space-between'}}>
+    //         <TouchableOpacity onPress={this.onReplyPress}>
+    //         <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20, marginTop: 20 }}>
+    //           <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Reply</Text>
+    //           </View>
+    //         </TouchableOpacity>
+    //         <TouchableOpacity onPress={this.onForwardPress}>
               
-              <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20 }}>
-              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Forward</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.onHidePress}>
-            <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:"#fff", marginBottom: 20 }}>
-              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Delete</Text>
-              </View>
-            </TouchableOpacity>
-            <View style={this.unknownContact ? null : {display:"none"}}>
-            <TouchableOpacity onPress={this.onAddContactPress}>
-            <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20 }}>
-              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Add Contact</Text>
-              </View>
-            </TouchableOpacity>
-            </View>
-            {/* <View style={{ width:'80%', height:'50%', backgroundColor:'#500000', justifyContent:'center', alignSelf:'center' }}>
-            <View style={{flexDirection:'column', justifyContent:'space-between'}}>
-            <TouchableOpacity onPress={this.onReplyPress}>
-              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:5}}>Reply</Text>
-              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.onForwardPress}>
-              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Forward</Text>
-              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.onHidePress}>
-              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Hide</Text>
-              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
-              </View>
-            </TouchableOpacity> */}
-            {/* <TouchableOpacity onPress={this._toggleModal}>
-              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Block User</Text>
-              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this._toggleModal}>
-              <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Report</Text>
-              <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
-              </View>
-            </TouchableOpacity> */}
-            <TouchableOpacity onPress={this._toggleModal}>
-            <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 10 }}>
-              <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Close</Text>
-              </View>
+    //           <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20 }}>
+    //           <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Forward</Text>
+    //           </View>
+    //         </TouchableOpacity>
+    //         <TouchableOpacity onPress={this.onHidePress}>
+    //         <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:"#fff", marginBottom: 20 }}>
+    //           <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Delete</Text>
+    //           </View>
+    //         </TouchableOpacity>
+    //         <View style={this.unknownContact ? null : {display:"none"}}>
+    //         <TouchableOpacity onPress={this.onAddContactPress}>
+    //         <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 20 }}>
+    //           <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Add Contact</Text>
+    //           </View>
+    //         </TouchableOpacity>
+    //         </View>
+    //         {/* <View style={{ width:'80%', height:'50%', backgroundColor:'#500000', justifyContent:'center', alignSelf:'center' }}>
+    //         <View style={{flexDirection:'column', justifyContent:'space-between'}}>
+    //         <TouchableOpacity onPress={this.onReplyPress}>
+    //           <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:5}}>Reply</Text>
+    //           <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+    //           </View>
+    //         </TouchableOpacity>
+    //         <TouchableOpacity onPress={this.onForwardPress}>
+    //           <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Forward</Text>
+    //           <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+    //           </View>
+    //         </TouchableOpacity>
+    //         <TouchableOpacity onPress={this.onHidePress}>
+    //           <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Hide</Text>
+    //           <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+    //           </View>
+    //         </TouchableOpacity> */}
+    //         {/* <TouchableOpacity onPress={this._toggleModal}>
+    //           <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Block User</Text>
+    //           <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+    //           </View>
+    //         </TouchableOpacity>
+    //         <TouchableOpacity onPress={this._toggleModal}>
+    //           <Text style={{color:'white', textAlign:'center', fontSize:20, marginTop:10}}>Report</Text>
+    //           <View style={{backgroundColor:'white', width:'60%', height:0.5, alignSelf:'center' }}>
+    //           </View>
+    //         </TouchableOpacity> */}
+    //         <TouchableOpacity onPress={this._toggleModal}>
+    //         <View style={{ width:'80%', height:45, alignSelf:'center',borderRadius:10, backgroundColor:'#fff', marginBottom: 10 }}>
+    //           <Text style={{color:'black', textAlign:'center', fontSize:20, marginTop:5}}>Close</Text>
+    //           </View>
 
-            </TouchableOpacity>
-            </View>
-          </View>
-          </Modal>
+    //         </TouchableOpacity>
+    //         </View>
+    //       </View>
+    //       </Modal>
 
-          {/* <MiniOfflineSign /> */}
-          <View style={{flexDirection:'column', flex:1}}>
-          <View style={{flex:1, flexDirection:'row'}}>
-          <View style={{justifyContent:'flex-start'}}>
-          <Text style={{paddingLeft:15,textAlign:'left', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}>{this.props.item.title}</Text>
-          </View>
-          <View style={{justifyContent:'flex-end'}}>
-          <Text style={{paddingRight:10,textAlign:'right', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}>{this.props.item.date}</Text>
-          </View>
-          </View>
-          <View style={{flex:1, flexDirection:'row'}}>
-          <View style={{flex :1,justifyContent:'flex-start'}}>
-          <Text style={{paddingHorizontal:15,textAlign:'left', color:this.props.item.tColor}}>{this.props.item.text}</Text>
-          </View>
-          <View style={this.item.bColor==='#282828' ? null : {display:"none"} }>
-           <View style={this.item.statuss==='read' ? null : {display:"none"} }>
-            <View style={{flex: 0.4,justifyContent:'flex-end', paddingRight: 15}}>
-          {/* <View style={{justifyContent:'flex-end',width:0,height:0,backgroundColor:'transparent',borderStyle:'solid',borderLeftWidth:10,borderRightWidth:10,borderBottomWidth:15,borderLeftColor:'transparent',borderRightColor:'transparent',borderBottomColor:'white'}}> */}
-          {/* </View> */}
-               <Image source={require('../images/traingleFull.png')} style={{width: 20, height: 20, resizeMode:'contain', alignSelf:'flex-end'}} />
-            </View>
-           </View>
-           <View style={this.item.statuss==='unread' ? null : {display:"none"} }>
-            <View style={{flex: 0.4,justifyContent:'flex-end', paddingRight: 15}}>
-          {/* <View style={{justifyContent:'flex-end',width:0,height:0,backgroundColor:'transparent',borderStyle:'solid',borderLeftWidth:10,borderRightWidth:10,borderBottomWidth:15,borderLeftColor:'transparent',borderRightColor:'transparent',borderBottomColor:'white'}}> */}
-          {/* </View> */}
-               <Image source={require('../images/traingleHalf.png')} style={{width: 20, height: 20, resizeMode:'contain', alignSelf:'flex-end'}} />
-            </View>
-           </View>
-          </View>
-          </View>
-          {/* <View style={{paddingRight:10,alignItems:'right', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}> */}
-          </View>
-          {/* </View> */}
-        </View>
-        {/* </View> */}
-      </TouchableHighlight>
-    );
-   }
+    //       {/* <MiniOfflineSign /> */}
+    //       <View style={{flexDirection:'column', flex:1}}>
+    //       <View style={{flex:1, flexDirection:'row'}}>
+    //       <View style={{justifyContent:'flex-start'}}>
+    //       <Text style={{paddingLeft:15,textAlign:'left', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}>{this.props.item.title}</Text>
+    //       </View>
+    //       <View style={{justifyContent:'flex-end'}}>
+    //       <Text style={{paddingRight:10,textAlign:'right', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}>{this.props.item.date}</Text>
+    //       </View>
+    //       </View>
+    //       <View style={{flex:1, flexDirection:'row'}}>
+    //       <View style={{flex :1,justifyContent:'flex-start'}}>
+    //       <Text style={{paddingHorizontal:15,textAlign:'left', color:this.props.item.tColor}}>{this.props.item.text}</Text>
+    //       </View>
+    //       <View style={this.item.bColor==='#282828' ? null : {display:"none"} }>
+    //        <View style={this.item.statuss==='read' ? null : {display:"none"} }>
+    //         <View style={{flex: 0.4,justifyContent:'flex-end', paddingRight: 15}}>
+    //       {/* <View style={{justifyContent:'flex-end',width:0,height:0,backgroundColor:'transparent',borderStyle:'solid',borderLeftWidth:10,borderRightWidth:10,borderBottomWidth:15,borderLeftColor:'transparent',borderRightColor:'transparent',borderBottomColor:'white'}}> */}
+    //       {/* </View> */}
+    //            <Image source={require('../images/traingleFull.png')} style={{width: 20, height: 20, resizeMode:'contain', alignSelf:'flex-end'}} />
+    //         </View>
+    //        </View>
+    //        <View style={this.item.statuss==='unread' ? null : {display:"none"} }>
+    //         <View style={{flex: 0.4,justifyContent:'flex-end', paddingRight: 15}}>
+    //       {/* <View style={{justifyContent:'flex-end',width:0,height:0,backgroundColor:'transparent',borderStyle:'solid',borderLeftWidth:10,borderRightWidth:10,borderBottomWidth:15,borderLeftColor:'transparent',borderRightColor:'transparent',borderBottomColor:'white'}}> */}
+    //       {/* </View> */}
+    //            <Image source={require('../images/traingleHalf.png')} style={{width: 20, height: 20, resizeMode:'contain', alignSelf:'flex-end'}} />
+    //         </View>
+    //        </View>
+    //       </View>
+    //       </View>
+    //       {/* <View style={{paddingRight:10,alignItems:'right', color:this.props.item.tColor,width:(DEVICE_WIDTH-30)/2}}> */}
+    //       </View>
+    //       {/* </View> */}
+    //     </View>
+    //     {/* </View> */}
+    //   </TouchableHighlight>
+    // );
+ //  }
   }
 }
 
