@@ -208,11 +208,14 @@ export default class SendMessageModal extends React.Component {
       console.log('response: ' + JSON.stringify(responseData))
       this.insertNewMessage(new_message_id, msg_txt, user_ids, timestamp)
       ToastAndroid.show('Message has been sent!',ToastAndroid.LONG)
-      this.props.navigation.state.params.onNavigateBack2(this.state.message)
+      console.log("NEW DATA :")
+      console.log(this.props.navigation.state.params)
+      this.props.navigation.state.params.onNavigateBack2('data')
       // console.log("HWRE")
       // console.log(this.props.navigation.state.params)
       this.props.navigation.navigate('Feed');
-    }).catch((error) => {
+    })
+    .catch((error) => {
       alert("Network issue occurred... Please try again.")
       console.error(error)
     })

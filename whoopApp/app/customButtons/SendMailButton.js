@@ -26,9 +26,19 @@ export default class SendMailButton extends React.Component {
   constructor(props) {
     super(props);
   };
+  handleOnNavigateBack2(foo2) {
+    this.setState({
+      foo2: foo2,
+    })
+  //b = new Feed();
+  //b._onRefresh();
+  // this.forceUpdate()
+   //this._onRefresh()
+   //this._onRefresh()
+  }
 
   _onPress = () => {
-    this.props.navigation.navigate('SendMessageModal');
+    this.props.navigation.navigate('SendMessageModal', {onNavigateBack2: this.handleOnNavigateBack2.bind(this)});
   };
 
   render() {

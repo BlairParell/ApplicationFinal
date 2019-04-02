@@ -88,7 +88,7 @@ class Message extends React.Component{
   }
   handleOnNavigateBack2(foo) {
     this.setState({
-      state: this.state
+      foo: foo,
     })
   b = new Feed();
   b._onRefresh();
